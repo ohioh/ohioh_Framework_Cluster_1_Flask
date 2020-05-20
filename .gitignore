@@ -1,0 +1,6 @@
+*.pyc
+launch.json
+settings.json
+.vscode/*
+.env
+*\__pycache__
