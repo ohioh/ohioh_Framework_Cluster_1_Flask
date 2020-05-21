@@ -6,7 +6,7 @@ from ..schemas.users import UserSchema
 from ..services.db import DbOperations
 
 
-users = mongo.ohio.users
+users = mongo.ohioh.users
 db = DbOperations(collections=users, schema=UserSchema)
 
 
