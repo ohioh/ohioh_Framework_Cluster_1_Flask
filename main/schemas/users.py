@@ -12,6 +12,7 @@ class UserSchema(Schema):
     country=ms_fields.Str()
     is_infected = ms_fields.Bool()
     infection_accuracy = ms_fields.Float()
+    user_privacy_data = ms_fields.Bool()
     tracking_save_duration = ms_fields.Float()
     bluetooth_save_duration = ms_fields.Float()
     data_save_duration = ms_fields.Float()
