@@ -23,7 +23,7 @@ class DbOperations:
         return make_response(result)
 
     def find_all(self):
-        import pdb; pdb.set_trace()
+        
         cursor = self.collections.find()
         result = self.schema(many=True).dumps(cursor)
         return make_response(result)
