@@ -6,7 +6,7 @@ import marshmallow.fields as ms_fields
 
 class UserSchema(Schema):
     user_id = ms_fields.Str()
-    user_timestamp = ms_fields.DateTime(default=datetime.now())
+    user_timestamp = ms_fields.DateTime(default=datetime.now(), format='%Y-%m-%dT%H:%M:%S+06:00')
     user_mac = ms_fields.Str(default="")
     first_name = ms_fields.Str(default="")
     last_name = ms_fields.Str(default="")
@@ -21,7 +21,7 @@ class UserSchema(Schema):
     data_delete_date = ms_fields.Date()
     phone = ms_fields.Int(required=False)
     zip_code = ms_fields.Int(required=False)
-    registration_date = ms_fields.Date(default=date.today())
+    registration_date = ms_fields.Date(default=date.today(), format='%Y-%m-%d')
 
 
     class Meta:

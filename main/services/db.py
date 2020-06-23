@@ -12,9 +12,9 @@ class DbOperations:
     def insert(self, payload):
         new_date = date.today() + timedelta(days=payload['data_save_duration'])
         payload = self.schema().load(payload)
-        payload['data_delete_date'] = new_date.isoformat()
-        payload['user_timestamp'] = datetime.now().isoformat()
-        payload['registration_date'] = date.today().isoformat()
+        payload['data_delete_date'] = new_date
+        payload['user_timestamp'] = datetime.now()
+        payload['registration_date'] = date.today()
 
         inserted_id = self.collections.insert_one(payload).inserted_id
 
@@ -26,13 +26,13 @@ class DbOperations:
 
     def find_one(self, criteria):
         record = self.collections.find_one(criteria)
-        result = self.schema().dump(record) if record is not None else error_message(criteria, 'Record not found!')
+        result = self.schema().load(record) if record is not None else error_message(criteria, 'Record not found!')
         return make_response(result)
 
     def find_all(self):
         cursor = self.collections.find()
         result = self.schema(many=True).load(cursor)
-        return make_response(str(result))
+        return result
 
     def update(self, criteria, update):
         new_value = { "$set": update }
