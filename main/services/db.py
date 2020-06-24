@@ -10,17 +10,18 @@ class DbOperations:
         self.schema = schema
 
     def insert(self, payload):
-        new_date = date.today() + timedelta(days=payload['data_save_duration'])
-        payload = self.schema().load(payload)
-        payload['data_delete_date'] = new_date
-        payload['user_timestamp'] = datetime.now()
-        payload['registration_date'] = date.today()
-
+        new_date = datetime.now().date() + timedelta(days=payload['data_save_duration'])
+        payload = self.schema().dump(payload)
         inserted_id = self.collections.insert_one(payload).inserted_id
 
         self.update(
             criteria={ '_id': ObjectId(inserted_id) },
-            update={'user_id': str(inserted_id)}
+            update={
+                'user_id': str(inserted_id),
+                'data_delete_date': new_date.isoformat(),
+                'user_timestamp': datetime.now().isoformat(),
+                'registration_date': datetime.now().date().isoformat()
+                }
         )
         return f"{str(inserted_id)} added"
 
@@ -31,7 +32,12 @@ class DbOperations:
 
     def find_all(self):
         cursor = self.collections.find()
-        result = self.schema(many=True).load(cursor)
+        result = self.schema().load(cursor, many=True)
+        
+        for each in result:
+            each['data_delete_date'] = each['data_delete_date'].strftime('%Y-%m-%d')
+            each['user_timestamp'] = str(each['user_timestamp'])
+            each['registration_date'] = each['registration_date'].strftime('%Y-%m-%d')
         return result
 
     def update(self, criteria, update):
